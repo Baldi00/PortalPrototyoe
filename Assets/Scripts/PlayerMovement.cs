@@ -36,14 +36,21 @@ public class PlayerMovement : MonoBehaviour
         SetNextPlayerPosition(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 		UpdateCameraRotation();
 		UpdatePlayerPosition();
-	}
+    }
 
-	/// <summary>
-	/// Sets the next camera rotation based on the player inputs
-	/// </summary>
-	/// <param name="mouseXInput">The x coordinate of the mouse position [-1, 1]</param>
-	/// <param name="mouseYInput">The y coordinate of the mouse position [-1, 1]</param>
-	public void SetNextCameraRotation(float mouseXInput, float mouseYInput)
+    public void TeleportTo(Vector3 position)
+    {
+        characterController.enabled = false;
+        transform.position = position;
+        characterController.enabled = true;
+    }
+
+    /// <summary>
+    /// Sets the next camera rotation based on the player inputs
+    /// </summary>
+    /// <param name="mouseXInput">The x coordinate of the mouse position [-1, 1]</param>
+    /// <param name="mouseYInput">The y coordinate of the mouse position [-1, 1]</param>
+    private void SetNextCameraRotation(float mouseXInput, float mouseYInput)
 	{
 		currentCameraYRotation += mouseXInput * cameraHorizontalSpeed;
 		currentCameraXRotation -= mouseYInput * cameraVerticalSpeed;
@@ -55,16 +62,16 @@ public class PlayerMovement : MonoBehaviour
 	/// </summary>
 	/// <param name="horizontalMovement">The horizontal shift [-1, 1]</param>
 	/// <param name="verticalMovement">The vertical shift [-1, 1]</param>
-	public void SetNextPlayerPosition(float horizontalMovement, float verticalMovement)
+	private void SetNextPlayerPosition(float horizontalMovement, float verticalMovement)
 	{
 		playerPositionHorizontalShift = horizontalMovement * walkingSpeed;
 		playerPositionVerticalShift = verticalMovement * walkingSpeed;
 	}
 
-	/// <summary>
-	/// Updates the player position based on the set values from the input manager
-	/// </summary>
-	private void UpdatePlayerPosition()
+    /// <summary>
+    /// Updates the player position based on the set values from the input manager
+    /// </summary>
+    private void UpdatePlayerPosition()
 	{
 		characterController.Move(
 			(transform.right * playerPositionHorizontalShift +
